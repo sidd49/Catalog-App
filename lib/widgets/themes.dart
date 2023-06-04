@@ -26,13 +26,12 @@ class MyTheme {
  
   static ThemeData darkTheme(BuildContext context) =>
       ThemeData(
-            brightness: Brightness.dark,
       fontFamily: GoogleFonts.poppins().fontFamily,
       cardColor: Colors.black,
       canvasColor: darkCreamColor,
       splashColor: lightBluishColor,
       appBarTheme: AppBarTheme(
-        color: Colors.black,
+        color: Colors.black, 
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.white), toolbarTextStyle: Theme.of(context).textTheme.copyWith(
               titleLarge:
@@ -42,5 +41,5 @@ class MyTheme {
                   context.textTheme.titleLarge?.copyWith(color: Colors.white),
             ).titleLarge,
         ),
-        colorScheme: ColorScheme.fromSwatch(accentColor: Colors.white).copyWith(secondary: Colors.white));
+        colorScheme: ColorScheme.fromSwatch(accentColor: Colors.white).copyWith(secondary: Colors.white, brightness: Brightness.dark));
 }

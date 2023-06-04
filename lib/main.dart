@@ -1,7 +1,7 @@
 import 'package:firstapp/pages/cart_page.dart';
 import 'package:firstapp/pages/home_page.dart';
-import 'package:firstapp/pages/item_details.dart';
 import 'package:firstapp/pages/login_page.dart';
+import 'package:firstapp/utils/my_routes.dart';
 import 'package:firstapp/widgets/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -18,15 +18,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
       theme: MyTheme.lightTheme(context),
-          darkTheme: MyTheme.lightTheme(context),
-          initialRoute: "/home",
+          darkTheme: MyTheme.darkTheme(context),
+          debugShowCheckedModeBanner: false,
+          initialRoute: MyRoutes.homeRoute,
           routes: {
             "/": (context) => const LoginPage(),
-            "/login": (context) => const LoginPage(),
-            "/home": (context) => const HomePage(),
-            "/cart":(context) => const CartPage()
+            MyRoutes.loginRoute: (context) => const LoginPage(),
+            MyRoutes.homeRoute: (context) => const HomePage(),
+            MyRoutes.cartRoute:(context) => const CartPage()
             
           },
     );

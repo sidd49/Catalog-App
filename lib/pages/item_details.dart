@@ -21,7 +21,7 @@ class ItemDetailsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
-      backgroundColor: context.canvasColor,
+      backgroundColor: context.cardColor,
       bottomNavigationBar: Container(
         color: context.cardColor,
         child:  ButtonBar(
@@ -46,7 +46,7 @@ class ItemDetailsPage extends StatelessWidget {
                 edge: VxEdge.TOP,
                 child: 
                   Container(
-                    color: context.theme.splashColor,
+                    color: context.theme.canvasColor,
                     width: context.screenWidth,
                     child: Column(
                       children: [

@@ -1,13 +1,10 @@
-import 'package:firstapp/models/cart.dart';
 import 'package:firstapp/pages/item_details.dart';
-import 'package:firstapp/utils/my_routes.dart';
 import 'package:firstapp/widgets/home_widgets/catalog_image.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../models/catalog.dart';
 import 'add_to_cart.dart';
-import '../themes.dart';
 
 class CatalogList extends StatelessWidget {
   const CatalogList({super.key});
