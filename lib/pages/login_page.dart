@@ -1,6 +1,6 @@
 import 'package:firstapp/utils/my_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
       });
       await Future.delayed(const Duration(seconds: 1));
       // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, MyRoutes.HomeRoute);
+      Navigator.pushNamed(context, MyRoutes.homeRoute);
       setState(() {
         onchange = false;
       });
@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Material(
-        color: Colors.white,
+        color: context.canvasColor,
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -82,13 +82,13 @@ class _LoginPageState extends State<LoginPage> {
                           height: 20,
                         ),
                         Material(
-                          color: Colors.deepPurple,
+                          color: context.theme.splashColor,
                           borderRadius:
                               BorderRadius.circular(onchange ? 50 : 8),
                           child: InkWell(
                               onTap: () => moveToHome(context),
                               child: AnimatedContainer(
-                                duration: Duration(seconds: 1),
+                                duration: const Duration(seconds: 1),
                                 width: onchange ? 50 : 150,
                                 height: 50,
                                 alignment: Alignment.center,
@@ -107,14 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                               )),
                         )
-                        // ElevatedButton(
-                        //   onPressed: () {
-                        //     Navigator.pushNamed(context, MyRoutes.HomeRoute);
-                        //   },
-                        //   style: TextButton.styleFrom(
-                        //       minimumSize: const Size(150, 40)),
-                        //   child: const Text("Login"),
-                        // )
+                       
                       ],
                     ))
               ],

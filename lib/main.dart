@@ -1,11 +1,15 @@
+import 'package:firstapp/pages/cart_page.dart';
 import 'package:firstapp/pages/home_page.dart';
+import 'package:firstapp/pages/item_details.dart';
 import 'package:firstapp/pages/login_page.dart';
 import 'package:firstapp/widgets/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:velocity_x/velocity_x.dart';
+
+import 'core/store.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(VxState(store: MyStore(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +25,9 @@ class MyApp extends StatelessWidget {
           routes: {
             "/": (context) => const LoginPage(),
             "/login": (context) => const LoginPage(),
-            "/home": (context) => const HomePage()
+            "/home": (context) => const HomePage(),
+            "/cart":(context) => const CartPage()
+            
           },
     );
   }
