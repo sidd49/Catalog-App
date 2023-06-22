@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firstapp/core/store.dart';
 import 'package:firstapp/models/cart.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,8 +34,6 @@ class _HomePageState extends State<HomePage> {
 
   loadData() async {
     await Future.delayed(const Duration(seconds: 2));
-    // final response = await http.get(Uri.parse(url));
-    // final catalogJson = response.body;
 
     final catalogJson =
         await rootBundle.loadString("assests/files/catalog.json");
@@ -45,48 +44,63 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+Future<bool> _onWillPop() async {
+    return false; //<-- SEE HERE
+  }
   @override
   Widget build(BuildContext context) {
     final _cart = (VxState.store as MyStore).cart;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-      ),
-      backgroundColor: context.canvasColor,
-      body: SafeArea(
-        child: Container(
-            child: Column(
-          children: [
-            const CatalogHeader().pOnly(right: 200),
-            if (CatalogModel.items.isNotEmpty)
-              const CatalogList().expand()
-            else
-              const Center(
-                child: CircularProgressIndicator(),
-              ).expand()
-          ],
-        )),
-      ),
-      floatingActionButton: VxBuilder(
-        mutations: const  {AddMutation, RemoveMutation},
-        builder: (context,_, VxStatus) {
-          return FloatingActionButton(
-            onPressed: () => Navigator.pushNamed(context, MyRoutes.cartRoute),
-            backgroundColor: context.theme.splashColor,
-            child: const Icon(
-              CupertinoIcons.cart,
-              color: Colors.white,
-            ),
-          ).badge(
-            color : Vx.gray200,
-            size: 22,
-            count: _cart!.items.length,
-            textStyle: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold
-            )
-          );
-        }
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(context.theme.splashColor)),
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.pushNamed(context, MyRoutes.loginRoute);
+              },
+              child: "Log Out".text.make(),
+            ).wh(90, 40),
+          ]),
+          backgroundColor: Colors.transparent,
+        ),
+        backgroundColor: context.canvasColor,
+        body: SafeArea(
+          child: Container(
+              child: Column(
+            children: [
+              const CatalogHeader().pOnly(right: 200),
+              if (CatalogModel.items.isNotEmpty)
+                const CatalogList().expand()
+              else
+                const Center(
+                  child: CircularProgressIndicator(),
+                ).expand()
+            ],
+          )),
+        ),
+        floatingActionButton: VxBuilder(
+            mutations: const {AddMutation, RemoveMutation},
+            builder: (context, _, VxStatus) {
+              return FloatingActionButton(
+                onPressed: () =>
+                    Navigator.pushNamed(context, MyRoutes.cartRoute),
+                backgroundColor: context.theme.splashColor,
+                child: const Icon(
+                  CupertinoIcons.cart,
+                  color: Colors.white,
+                ),
+              ).badge(
+                  color: Vx.gray200,
+                  size: 22,
+                  count: _cart!.items.length,
+                  textStyle: const TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold));
+            }),
       ),
     );
   }

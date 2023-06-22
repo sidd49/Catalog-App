@@ -1,3 +1,5 @@
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firstapp/utils/my_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -10,6 +12,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    
+
+    emailController.dispose();
+    passwordController.dispose();
+
+    super.dispose();
+  }
+
   String name = "";
   bool onchange = false;
   final _formKey = GlobalKey<FormState>();
@@ -27,6 +42,44 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
+
+ Future<User?> signInUsingEmailPassword({
+  required String email,
+  required String password,
+  required BuildContext context,
+}) async {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User? user;
+  if(user != Null)
+  {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        onchange = true;
+      });
+      await Future.delayed(const Duration(seconds: 1));
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamed(context, MyRoutes.homeRoute);
+      setState(() {
+        onchange = false;
+      });
+    }
+  }
+  try {
+    UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    user = userCredential.user;
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      print('No user found for that email.');
+    } else if (e.code == 'wrong-password') {
+      print('Wrong password provided.');
+    }
+  }
+
+  return user;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: [
                         TextFormField(
+                          controller: emailController,
                           decoration: const InputDecoration(
                               hintText: "Enter Username",
                               labelText: "Username"),
@@ -65,6 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         TextFormField(
+                          controller: passwordController,
                           obscureText: true,
                           decoration: const InputDecoration(
                               hintText: "Enter Password",
@@ -86,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius:
                               BorderRadius.circular(onchange ? 50 : 8),
                           child: InkWell(
-                              onTap: () => moveToHome(context),
+                              onTap: () => signInUsingEmailPassword( email : emailController.text.trim(), password: passwordController.text.trim(),context: context),
                               child: AnimatedContainer(
                                 duration: const Duration(seconds: 1),
                                 width: onchange ? 50 : 150,
@@ -107,12 +162,13 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                               )),
                         )
-                       
                       ],
                     ))
               ],
             ),
           ),
         ));
+   
+    
   }
 }
