@@ -2,11 +2,7 @@
 import 'package:firstapp/widgets/home_widgets/add_to_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import 'package:firstapp/widgets/home_widgets/catalog_image.dart';
-
 import '../models/catalog.dart';
-import '../widgets/themes.dart';
 
 class ItemDetailsPage extends StatelessWidget {
   final Item catalog;
