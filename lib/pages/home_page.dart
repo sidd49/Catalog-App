@@ -14,7 +14,7 @@ import 'package:firstapp/models/catalog.dart';
 import '../utils/my_routes.dart';
 import '../widgets/home_widgets/catalog_header.dart';
 import '../widgets/home_widgets/catalog_item.dart';
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

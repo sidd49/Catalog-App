@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firstapp/utils/my_routes.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +16,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    
-
     emailController.dispose();
     passwordController.dispose();
 
@@ -29,57 +26,57 @@ class _LoginPageState extends State<LoginPage> {
   bool onchange = false;
   final _formKey = GlobalKey<FormState>();
 
-  moveToHome(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        onchange = true;
-      });
-      await Future.delayed(const Duration(seconds: 1));
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, MyRoutes.homeRoute);
-      setState(() {
-        onchange = false;
-      });
-    }
-  }
+  // moveToHome(BuildContext context) async {
+  //   if (_formKey.currentState!.validate()) {
+  //     setState(() {
+  //       onchange = true;
+  //     });
+  //     await Future.delayed(const Duration(seconds: 1));
+  //     // ignore: use_build_context_synchronously
+  //     Navigator.pushNamed(context, MyRoutes.homeRoute);
+  //     setState(() {
+  //       onchange = false;
+  //     });
+  //   }
+  // }
 
- Future<User?> signInUsingEmailPassword({
-  required String email,
-  required String password,
-  required BuildContext context,
-}) async {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User? user;
-  if(user != Null)
-  {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        onchange = true;
-      });
-      await Future.delayed(const Duration(seconds: 1));
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, MyRoutes.homeRoute);
-      setState(() {
-        onchange = false;
-      });
-    }
-  }
-  try {
-    UserCredential userCredential = await auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    user = userCredential.user;
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found') {
-      print('No user found for that email.');
-    } else if (e.code == 'wrong-password') {
-      print('Wrong password provided.');
-    }
-  }
+  Future<User?> signInUsingEmailPassword({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
 
-  return user;
-}
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      user = userCredential.user;
+      if (user != Null) {
+        if (_formKey.currentState!.validate()) {
+          setState(() {
+            onchange = true;
+          });
+          await Future.delayed(const Duration(seconds: 1));
+          // ignore: use_build_context_synchronously
+          Navigator.pushNamed(context, MyRoutes.homeRoute);
+          setState(() {
+            onchange = false;
+          });
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('Not Registered');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided.');
+      }
+    }
+
+    return user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +138,10 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius:
                               BorderRadius.circular(onchange ? 50 : 8),
                           child: InkWell(
-                              onTap: () => signInUsingEmailPassword( email : emailController.text.trim(), password: passwordController.text.trim(),context: context),
+                              onTap: () => signInUsingEmailPassword(
+                                  email: emailController.text.trim(),
+                                  password: passwordController.text.trim(),
+                                  context: context),
                               child: AnimatedContainer(
                                 duration: const Duration(seconds: 1),
                                 width: onchange ? 50 : 150,
@@ -161,14 +161,18 @@ class _LoginPageState extends State<LoginPage> {
                                             fontSize: 18),
                                       ),
                               )),
-                        )
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, MyRoutes.registerRoute);
+                            },
+                            child: "Sign Up".text.make()),
                       ],
                     ))
               ],
             ),
           ),
         ));
-   
-    
   }
 }
